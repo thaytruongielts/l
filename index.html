@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cẩm Nang Nghe B1 Preliminary (PET)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Calm Study -->
+    <!-- Application Structure Plan: Ứng dụng được thiết kế theo cấu trúc điều hướng bên (side-nav) cố định và vùng nội dung chính. Cấu trúc này tối ưu cho việc học tập, cho phép người dùng dễ dàng chuyển đổi giữa các phần lý thuyết (Tổng quan, Part 1-4, Kỹ năng, Chiến lược) mà không mất ngữ cảnh. Thay vì cuộn một trang dài, người dùng có thể tập trung vào từng phần kiến thức một cách riêng biệt. Luồng tương tác chính là nhấp vào menu để hiển thị nội dung tương ứng, tạo ra một trải nghiệm mượt mà và tập trung. -->
+    <!-- Visualization & Content Choices: Report Info: Lý thuyết chi tiết về bài thi Nghe PET -> Goal: Cung cấp thông tin, tổ chức và hướng dẫn chiến lược -> Viz/Presentation Method: Sử dụng các thẻ thông tin (cards), bảng biểu được định dạng rõ ràng, và danh sách có cấu trúc để trình bày nội dung. -> Interaction: Tương tác chính là hệ thống điều hướng dựa trên JavaScript để hiển thị/ẩn các phần nội dung. Bổ sung các nút bấm có thể bật/tắt để hiển thị chi tiết chiến lược, giúp giao diện gọn gàng hơn. -> Justification: Vì nội dung là lý thuyết, việc tập trung vào kiến trúc thông tin và khả năng điều hướng dễ dàng quan trọng hơn là biểu đồ hóa dữ liệu. -> Library/Method: Vanilla JS cho tất cả các tương tác. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 4px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            background-color: #e9ecef;
+            border-left-color: #007bff;
+            color: #0056b3;
+            transform: translateX(4px);
+        }
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        .content-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f3f5;
+        }
+        .strategy-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .strategy-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+        }
+        .strategy-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Cẩm Nang Toàn Diện - PET Listening</h1>
+            <p class="text-lg text-gray-600 mt-2">Chiến lược và phân tích chi tiết từng phần</p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            <aside class="w-full md:w-1/4">
+                <nav id="main-nav" class="bg-white rounded-lg shadow-md p-4 sticky top-8">
+                    <ul class="space-y-1">
+                        <li><a href="#" class="nav-link block p-3 rounded-r-md font-semibold text-gray-700 active" data-target="overview">1. Tổng Quan</a></li>
+                        <li><a href="#" class="nav-link block p-3 rounded-r-md font-semibold text-gray-700" data-target="part1">2. Phân Tích Part 1</a></li>
+                        <li><a href="#" class="nav-link block p-3 rounded-r-md font-semibold text-gray-700" data-target="part2">3. Phân Tích Part 2</a></li>
+                        <li><a href="#" class="nav-link block p-3 rounded-r-md font-semibold text-gray-700" data-target="part3">4. Phân Tích Part 3</a></li>
+                        <li><a href="#" class="nav-link block p-3 rounded-r-md font-semibold text-gray-700" data-target="part4">5. Phân Tích Part 4</a></li>
+                        <li><a href="#" class="nav-link block p-3 rounded-r-md font-semibold text-gray-700" data-target="skills">6. Kỹ Năng Cốt Lõi</a></li>
+                        <li><a href="#" class="nav-link block p-3 rounded-r-md font-semibold text-gray-700" data-target="strategy">7. Chiến Lược Thi</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="w-full md:w-3/4">
+                <!-- Section: Overview -->
+                <section id="overview" class="content-section active bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-3xl font-bold mb-6 border-b pb-3">1. Tổng Quan Bài Thi Nghe PET</h2>
+                    <p class="mb-6 text-gray-700">Đây là phần thi thứ ba trong bài thi B1 Preliminary, đánh giá khả năng hiểu các đoạn hội thoại và độc thoại trong nhiều ngữ cảnh hàng ngày. Nắm vững cấu trúc là bước đầu tiên để thành công.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-center">
+                        <div class="bg-blue-50 p-4 rounded-lg"><div class="text-2xl font-bold text-blue-800">~30 phút</div><div class="text-sm text-blue-600">Thời gian</div></div>
+                        <div class="bg-green-50 p-4 rounded-lg"><div class="text-2xl font-bold text-green-800">4 Phần</div><div class="text-sm text-green-600">Cấu trúc</div></div>
+                        <div class="bg-yellow-50 p-4 rounded-lg"><div class="text-2xl font-bold text-yellow-800">25 Câu</div><div class="text-sm text-yellow-600">Tổng số</div></div>
+                        <div class="bg-red-50 p-4 rounded-lg"><div class="text-2xl font-bold text-red-800">2 lần</div><div class="text-sm text-red-600">Lượt nghe</div></div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr><th>Yếu tố</th><th>Chi tiết</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="font-medium">Số điểm</td><td>Chiếm 25% tổng điểm.</td></tr>
+                                <tr><td class="font-medium">Lưu ý quan trọng</td><td>Có 6 phút cuối cùng để chuyển đáp án vào Answer Sheet.</td></tr>
+                                <tr><td class="font-medium">Kỹ năng chính</td><td>Nghe hiểu ý chính (Gist), chi tiết cụ thể (Specific Information), và thái độ/ý kiến (Attitude/Opinion).</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Function to generate Part sections -->
+                <script>
+                    function createPartSection(partNum, title, tableData, strategies) {
+                        const section = document.createElement('section');
+                        section.id = `part${partNum}`;
+                        section.className = 'content-section bg-white rounded-lg shadow-md p-6 md:p-8';
+
+                        let tableHTML = `<div class="overflow-x-auto mb-6"><table><thead><tr><th>Cấu trúc</th><th>Kỹ năng trọng tâm</th><th>Dạng câu hỏi</th></tr></thead><tbody><tr>`;
+                        tableData.forEach(cell => tableHTML += `<td>${cell}</td>`);
+                        tableHTML += `</tr></tbody></table></div>`;
+
+                        let strategyHTML = `<h3 class="text-2xl font-bold mb-4">❖ Chiến lược làm bài</h3><ul class="strategy-list">`;
+                        strategies.forEach(strategy => strategyHTML += `<li>${strategy}</li>`);
+                        strategyHTML += `</ul>`;
+
+                        section.innerHTML = `
+                            <h2 class="text-3xl font-bold mb-6 border-b pb-3">${partNum + 1}. Part ${partNum}: ${title}</h2>
+                            ${tableHTML}
+                            ${strategyHTML}
+                        `;
+                        return section;
+                    }
+                </script>
+
+                <!-- Section: Skills -->
+                <section id="skills" class="content-section bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-3xl font-bold mb-6 border-b pb-3">6. Các Kỹ Năng Nghe Cốt Lõi</h2>
+                    <p class="mb-6 text-gray-700">Để làm tốt bài thi, bạn cần rèn luyện thành thạo các kỹ năng nghe sau đây. Đây là nền tảng giúp bạn xử lý mọi dạng câu hỏi một cách tự tin.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg">Nghe Tách Biệt (Discrimination)</h3>
+                            <p>Phân biệt các âm thanh, từ vựng gần giống nhau, các con số và tên gọi.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-green-500">
+                            <h3 class="font-bold text-lg">Nghe Ý Chính (Listening for Gist)</h3>
+                            <p>Hiểu chủ đề tổng thể, mục đích giao tiếp mà không cần hiểu từng từ.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-yellow-500">
+                            <h3 class="font-bold text-lg">Nghe Chi Tiết (Listening for Specific Information)</h3>
+                            <p>Lọc ra những thông tin cụ thể (tên, ngày, số). Rất quan trọng trong Part 3.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-red-500">
+                            <h3 class="font-bold text-lg">Nghe Thái Độ/Ý Kiến (Listening for Opinion/Attitude)</h3>
+                            <p>Nhận biết cảm xúc, quan điểm của người nói qua ngữ điệu và từ vựng.</p>
+                        </div>
+                         <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-purple-500">
+                            <h3 class="font-bold text-lg">Nghe Diễn Giải (Listening for Paraphrasing)</h3>
+                            <p>Hiểu rằng câu trả lời thường được diễn đạt lại (paraphrase) chứ không dùng từ y hệt.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Strategy -->
+                <section id="strategy" class="content-section bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-3xl font-bold mb-6 border-b pb-3">7. Chiến Lược Luyện Tập và Ngày Thi</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Luyện Tập Hàng Ngày</h3>
+                            <ul class="strategy-list">
+                                <li><strong>Đa dạng hóa nguồn nghe:</strong> Luyện nghe podcasts, video YouTube, tin tức đơn giản để làm quen với nhiều chủ đề và giọng điệu.</li>
+                                <li><strong>Luyện nghe giọng khác nhau:</strong> Tiếp xúc với giọng Anh, Mỹ, Úc... để tăng khả năng thích ứng trong phòng thi.</li>
+                                <li><strong>Tập trung vào Part 3:</strong> Thực hành điền từ và kiểm tra chính tả. Đây là phần dễ mất điểm nếu không cẩn thận.</li>
+                                <li><strong>Luyện tập với thời gian:</strong> Luôn bấm giờ khi làm đề mẫu để quen với áp lực thời gian.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Chiến Lược Ngày Thi</h3>
+                            <ul class="strategy-list">
+                                <li><strong>Tận dụng thời gian đọc:</strong> Đọc trước câu hỏi và gạch chân từ khóa ngay khi có thể. Đừng chờ đợi!</li>
+                                <li><strong>Viết nháp:</strong> Ghi chú nhanh câu trả lời vào đề thi trong lần nghe đầu tiên.</li>
+                                <li><strong>Kiểm tra lần 2:</strong> Dùng lần nghe thứ hai để xác nhận đáp án và điền những câu còn trống.</li>
+                                <li><strong>Quản lý 6 phút cuối:</strong> Chuyển đáp án cẩn thận, đặc biệt kiểm tra kỹ chính tả cho Part 3.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainContent = document.querySelector('main');
+
+            const part1Data = {
+                num: 1, title: 'Nghe Ngắn - Chọn Hình Ảnh/Thông Tin',
+                table: [
+                    '<strong>7 câu hỏi độc lập.</strong> Mỗi câu là một đoạn đối thoại/độc thoại ngắn (10–20 giây).',
+                    'Nghe ý chính (Gist) và thông tin cụ thể trong ngữ cảnh hàng ngày (thông báo, tin nhắn...).',
+                    'Chọn <strong>đáp án (A, B, C)</strong> hoặc <strong>hình ảnh</strong> chính xác nhất.'
+                ],
+                strategies: [
+                    '<strong>Phân tích bẫy:</strong> Quan sát kỹ 3 lựa chọn. Các thông tin gây nhiễu (distractors) sẽ được nhắc đến, nhưng chỉ có một đáp án đúng.',
+                    '<strong>Đọc câu hỏi trước:</strong> Xác định rõ yêu cầu (thời gian, địa điểm, mục đích...).',
+                    '<strong>Lần nghe 1:</strong> Nghe ý chính và loại bỏ ngay các đáp án sai rõ ràng.',
+                    '<strong>Lần nghe 2:</strong> Xác nhận lại thông tin chi tiết và chắc chắn với lựa chọn cuối cùng.'
+                ]
+            };
+
+            const part2Data = {
+                num: 2, title: 'Nghe Dài - Chọn Đáp Án',
+                table: [
+                    '<strong>6 câu hỏi độc lập.</strong> Một đoạn độc thoại hoặc hội thoại dài hơn (2–3 phút).',
+                    'Nghe hiểu chi tiết cụ thể, ý chính toàn bài, và nhận diện quan điểm người nói.',
+                    'Chọn <strong>đáp án (A, B, C)</strong> chính xác nhất theo thông tin trong bài.'
+                ],
+                strategies: [
+                    '<strong>Đọc tiêu đề/ngữ cảnh:</strong> Nắm chủ đề chung của bài nghe (ví dụ: phỏng vấn, bài giảng).',
+                    '<strong>Gạch chân từ khóa:</strong> Gạch chân từ khóa trong câu hỏi và lựa chọn, dự đoán cách diễn đạt khác (paraphrasing).',
+                    '<strong>Theo dõi luồng thông tin:</strong> Câu hỏi thường theo trình tự của bài nghe.',
+                    '<strong>Bẫy Paraphrasing:</strong> Đáp án hiếm khi lặp lại từ khóa y hệt. Cần nghe hiểu ý nghĩa.'
+                ]
+            };
+            
+            const part3Data = {
+                num: 3, title: 'Nghe Điền Từ',
+                table: [
+                    '<strong>6 chỗ trống</strong> cần điền. Một đoạn độc thoại (thông báo, bài giảng ngắn...).',
+                    'Nghe thông tin cụ thể chi tiết (tên, số, ngày, giá cả...).',
+                    'Điền từ/số (không quá 3 từ) vào chỗ trống trong phiếu ghi chú.'
+                ],
+                strategies: [
+                    '<strong>Phân tích ngữ pháp (CRITICAL):</strong> Trước khi nghe, xác định <strong>loại từ</strong> cần điền (danh từ, số, tính từ...).',
+                    '<strong>Dự đoán:</strong> Nếu cần danh từ số nhiều, lắng nghe âm /s/, /es/. Nếu cần số, chuẩn bị viết số.',
+                    '<strong>Tập trung vào chi tiết:</strong> Lắng nghe kỹ cách đánh vần tên, đọc số điện thoại, nhấn mạnh con số.',
+                    '<strong>Kiểm tra chính tả:</strong> Dùng 6 phút cuối giờ để kiểm tra chính tả cẩn thận. Sai chính tả sẽ không được tính điểm.'
+                ]
+            };
+
+            const part4Data = {
+                num: 4, title: 'Nghe Đối Thoại Dài',
+                table: [
+                    '<strong>6 câu hỏi độc lập.</strong> Một đoạn hội thoại dài giữa hai người về một chủ đề.',
+                    'Nghe hiểu chi tiết, nhận diện <strong>thái độ (Attitude)</strong>, <strong>quan điểm (Opinion)</strong>, và <strong>mục đích (Purpose)</strong>.',
+                    'Chọn đáp án (A, B, C) liên quan đến cảm xúc hoặc ý định.'
+                ],
+                strategies: [
+                    '<strong>Nghe quan điểm/cảm xúc:</strong> Tập trung vào các từ thể hiện cảm xúc mạnh (excited, disappointed, surprised...).',
+                    '<strong>Lắng nghe sự đồng tình/phản đối:</strong> Chú ý các cụm từ như "I agree", "Exactly", "Not really", "I don\'t think so...".',
+                    '<strong>Tập trung vào tổng thể:</strong> Câu trả lời có thể là kết luận từ thái độ chung của người nói, không chỉ từ một câu đơn lẻ.',
+                    '<strong>Bẫy cảm xúc:</strong> Nếu lựa chọn là "They were happy," hãy tìm các từ thể hiện niềm vui (great, wonderful), không chỉ từ "happy".'
+                ]
+            };
+
+            [part1Data, part2Data, part3Data, part4Data].forEach(data => {
+                const sectionEl = createPartSection(data.num, data.title, data.table, data.strategies);
+                mainContent.insertBefore(sectionEl, document.getElementById('skills'));
+            });
+
+            const navLinks = document.querySelectorAll('#main-nav a');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function showSection(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.target === targetId);
+                });
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+            }
+            
+            document.getElementById('main-nav').addEventListener('click', function(event) {
+                event.preventDefault();
+                const link = event.target.closest('a');
+                if (link) {
+                    const targetId = link.dataset.target;
+                    if (targetId) {
+                        showSection(targetId);
+                    }
+                }
+            });
+
+            // Initial load
+            showSection('overview');
+        });
+    </script>
+</body>
+</html>
